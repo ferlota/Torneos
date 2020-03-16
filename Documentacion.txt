@@ -1,0 +1,111 @@
+
+Cuando se presiona generar qualy, generar las dos tablas....qualy y posiciones --> LISTO
+
+Agregar columna "DIFERENCIA GAMES" --> LISTO
+
+cambiar la posicion al switchear, tratar de ordenar por GF y GC tb. --> LISTO!!!
+
+al presionar actualizar, destruir la tabla y volver a generarla con los nuevos datos.-->LISTO
+
+si se agrega un equipo y todavia no hay datos cargados en posiciones entonces, destruir las tablas y volver a generar.-->LISTO
+
+Volver a reasingar las posiciones en la tabla. -->LISTO
+
+Revisar porque le pone PJ a todos los equipos, PG y PP --> LISTO
+
+Agregar un boton para borrar la tabla de qualy. Al borrar la tabla de qualy tambien se borra la tabla de posiciones. --> LISTO
+
+Deshabilitar y habilitar los botones dependiendo del evento --> LISTO
+
+SE REDISENO EL ALGORITMO DE QUALYS PORQUE EN ALGUNOS ESTADOS SE TRABABA --> LISTO
+
+SE MEJORO EL ARMADO DE TABLAS DE QUALY PARA QUE SEA TOTALMENTE ALEATORIO EN LA POSICION EN LAS QUE ARMA LA TABLA --> LISTO
+
+
+
+EQUIPOS LIBRES -> DIFICULTAD ALTA -> PRIORIDAD ALTA --> LISTO! 
+---------------------------------------------------
+SE GENERA LA PRIMERA QUALY CON EQUIPO LIBRE. SI BORRO LA QUALY EL EQUIPO LIBRE NO SE PUEDE BORRAR. -->LISTO
+
+AL BORRAR LA TABLA DE QUALY DEBERIA BORRAR EL EQUIPO LIBRE DE LA TABLA DE TABLA DE TORNEO PARA QUE SE PUEDA INGRESAR OTROS EQUIPOS Y LUEGO VALIDAR NUEVAMENTE.-->DIFICULTAD MEDIA-->LISTO
+
+
+ELIMINAR TAMBIEN EL EQUIPO 1 DE LA TABLA DEL TORNEO CUANDO HAY MAS DE 4 EQUIPOS.-->FALTA //PRIORIDAD BAJA
+
+QUE PASA SI DOS EQUIPOS QUEDAN EMPATADOS EN TODO? SE DEBERIA HACER UN TIE BREAK QUE DEFINE LA POSICION --> FALTA //PRIORIDAD MEDIA
+
+Agregar el campo para indicar cuantos pasan del total de anotados. -->FALTA
+
+
+
+GENERAR LAS PANTALLAS DE CARGA
+------------------------------
+ABM DE CATEGORIA -->LISTO
+
+
+Formato de Tabla:
+
+ID_CATEGORIA Codigo CATEGORIA
+
+
+-------------------------
+ABM DE SEDE	 -->FALTA
+
+
+Formato de Tabla:
+
+ID_SEDE| Nombre del club | Direccion club | Telefono | Provincia (Opcional) | Localidad (Opcional)  
+
+
+--------------------------
+ABM DE JUGADOR   -->FALTA
+
+ID_JUGADOR | DNI_JUGADOR | Nombre | Apellido | Apodo | Categoria | Telefono
+
+
+-------------------------
+ABM DE TORNEO
+
+ID_TORNEO | Categoria_Torneo | Sede_Torneo | Fecha_torneo (dia,Mes,Ano) | Precio_Inscripcion | Modalidad_Torneo | Descripcion_Torneo | Costo_premios
+
+
+
+------------------------
+EQUIPOS_TORNEO
+
+ID_TORNEO |ID_EQUIPO| ID_JUGADOR1 | ID_JUGADOR2
+
+
+
+------------------------
+QUALY_TORNEO
+
+ID_TORNEO | NRO_QUALY (1,2,3...etc) | ID_EQUIPO1 | ID_EQUIPO2 | RESULTADO_EQUIPO1 | RESULTADO_EQUIPO2
+
+
+
+------------------------
+POSICION_TORNEO
+
+ID_TORNEO | ID_EQUIPO | POSICION | PJ | PG | PP | GF | GC | DIF_GAMES 
+
+
+------------------------
+Historico_Torneo
+
+ID_TORNEO | Categoria | Modalidad | Fecha | Ganadores (jugador1,Jugador2) | Precio_Inscripcion | Recaudacion | Ganancia 
+
+
+------------------------
+Historico_Jugador_Torneo
+
+ID_JUGADOR | DNI_JUGADOR | Nombre | Apellido | Apodo | Categoria_Torneo | Fecha_Torneo | Resultado (Campeon,Finalista,Semi,Llave,Qualy) 
+
+
+
+
+GENERAR CRUCES
+--------------
+
+
+

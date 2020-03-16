@@ -1,0 +1,113 @@
+<html>
+<title>ABM Jugador</title>
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="estilos.css"/>
+<script src="jquery-3.2.1.js" type="text/javascript"></script>
+<script src="brackets.min.js"></script>
+
+
+<script type="text/javascript">
+	function agregarLinea(){
+		var tabla = document.getElementById("tablaJugador");
+		var ultimaFila = tabla.rows.length;
+		var cantidad = ultimaFila;
+		var nuevaLinea = tabla.insertRow(ultimaFila);
+
+		var cell0 = nuevaLinea.insertCell(0);
+		var el = document.createElement('input'); //DNI
+  		el.type = 'text';
+  		el.name = 'txtRow'+ cantidad;
+  		el.id = 'txtRow' + cantidad;
+  		el.value = ' ';
+  		el.size = 10;
+  		cell0.appendChild(el);
+		
+		var cell1 = nuevaLinea.insertCell(1);
+		var el = document.createElement('input'); //Nombre
+  		el.type = 'text';
+  		el.name = 'txtRow'+ cantidad;
+  		el.id = 'txtRow' + cantidad;
+  		el.value = ' ';
+  		el.size = 20;
+  		cell1.appendChild(el);
+
+  		var cell2 = nuevaLinea.insertCell(2);
+		var el = document.createElement('input'); //Apellido
+  		el.type = 'text';
+  		el.name = 'txtRow'+ cantidad;
+  		el.id = 'txtRow' + cantidad;
+  		el.value = ' ';
+  		el.size = 30;
+  		cell2.appendChild(el);
+
+  		var cell3 = nuevaLinea.insertCell(3);
+		var el = document.createElement('input'); //Categoria
+  		el.type = 'text';
+  		el.name = 'txtRow'+ cantidad;
+  		el.id = 'txtRow' + cantidad;
+  		el.value = ' ';
+  		el.size = 2;
+  		cell3.appendChild(el);
+
+  		var cell4 = nuevaLinea.insertCell(4);
+		var el = document.createElement('input'); //Telefono
+  		el.type = 'text';
+  		el.name = 'txtRow'+ cantidad;
+  		el.id = 'txtRow' + cantidad;
+  		el.value = ' ';
+  		el.size = 11;
+  		cell4.appendChild(el);
+
+  		var cell5 = nuevaLinea.insertCell(5);
+		var el = document.createElement('input'); //Sexo
+  		el.type = 'text';
+  		el.name = 'txtRow'+ cantidad;
+  		el.id = 'txtRow' + cantidad;
+  		el.value = ' ';
+  		el.size = 1;
+  		cell5.appendChild(el);
+
+  		var cell6 = nuevaLinea.insertCell(6);
+  		var el = document.createElement('input');
+  		el.type = 'Button';
+  		el.value = 'Eliminar';
+  		el.id = 'btnRow' + cantidad;
+  		el.name = 'btnRow' + cantidad;
+  		el.onclick = function(){borrarLinea(this);};
+  		cell6.appendChild(el); 
+	}
+
+	function borrarLinea(row){
+	var tbl = document.getElementById('tablaJugador');
+  	var lastRow = tbl.rows.length;
+	var numeroFila = row.parentNode.parentNode.rowIndex;
+
+  	if (lastRow > 0){
+  		tbl.deleteRow(numeroFila);
+  		reasignarNroFilas();
+  		}
+	}
+
+
+</script>
+
+</head>
+<body>
+<FORM METHOD="POST" ACTION="">
+<TABLE BORDER="1" id="tablaJugador">
+	<tr>
+		<td>DNI</td>
+		<td>Nombre</td>
+		<td>Apellido</td>
+		<td>Categoria</td>
+		<td>Telefono</td>
+		<td>Sexo</td>
+	</tr>
+</TABLE>
+<P>
+	<INPUT TYPE="Button" VALUE="Agregar Jugador" id="btnAgregar" NAME="B1" onClick="agregarLinea();">
+	<INPUT TYPE="Button" VALUE="Guardar"  id="btnGuardar" NAME="B2" onClick="guardarJugador();">
+</FORM>
+</body>
+</html>

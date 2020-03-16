@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="estilos.css"/>
+<script src="jquery-3.2.1.js" type="text/javascript"></script>
+<script src="brackets.min.js"></script>
+
+<script type="text/javascript">
+
+
+
+	function agregarLinea(){
+		var tabla = document.getElementById("tablaTorneo");
+		var ultimaFila = tabla.rows.length;
+		var cantidad = ultimaFila;
+		var nuevaLinea = tabla.insertRow(ultimaFila);
+
+		var cell0 = nuevaLinea.insertCell(0);
+		var cell1 = nuevaLinea.insertCell(1);
+		var cell2 = nuevaLinea.insertCell(2);
+
+		
+		var numeroEquipo = document.createTextNode(cantidad);
+		numeroEquipo.id = 'cell' + cantidad;
+		cell0.appendChild(numeroEquipo);
+
+		var el = document.createElement('input');
+  		el.type = 'text';
+  		el.name = 'txtRow'+ cantidad;
+  		el.id = 'txtRow' + cantidad;
+  		el.value = 'FERNANDO';
+  		el.size = 25;
+  		cell1.appendChild(el);
+		
+		var el = document.createElement('input');
+  		el.type = 'text';
+  		el.name = 'txtRow'+ cantidad;
+  		el.id = 'txtRow' + cantidad;
+  		el.size = 25;
+  		cell2.appendChild(el);
+
+  		var cell3 = nuevaLinea.insertCell(3);
+  		var el = document.createElement('input');
+  		el.type = 'Button';
+  		el.value = 'Eliminar';
+  		el.id = 'btnRow' + cantidad;
+  		el.name = 'btnRow' + cantidad;
+  		el.onclick = function(){borrarLinea(this);};
+  		cell3.appendChild(el); 
+	}
+
+	function borrarLinea(row){
+	var tbl = document.getElementById('tablaTorneo');
+  	var lastRow = tbl.rows.length;
+	var numeroFila = row.parentNode.parentNode.rowIndex;
+
+  	if (lastRow > 2){
+  		tbl.deleteRow(numeroFila);
+  		reasignarNroFilas();
+  		}
+	}
+
+
+	function reasignarNroFilas(){
+	var tbl = document.getElementById('tablaTorneo');
+    for(var i=2;tbl.rows[i];i++){
+    	tbl.rows[i].cells[0].innerHTML = i;
+		}
+	}
+
+
+	function generarQualy(){
+	var tbl = document.getElementById('tablaTorneo');
+  	var cantEquipos = (tbl.rows.length-1);
+	var cantQualy = 3;
+  	var cantPar = cantEquipos%2;
+  	var cantPartidosQualy;
+
+  	if(cantEquipos < 4 ){ 
+  		alert("Poca cantidad de Equipos. Se necesitan al menos 4.");  		
+  	}
+  	else{
+  			deshabilitarBotonesPreQualy();
+  			habilitarBotonesPostQualy();	
+  			deshabilitarEliminar();
+  			if(cantPar==1){  				
+				cantEquipos = cantEquipos + 1;
+				cantPartidosQualy = cantEquipos/2;
+				agregarEquipoLibre();
+				crearTablasQualy(cantPartidosQualy);	
+  			}
+  			else{
+  			cantPartidosQualy = cantEquipos/2;
+  			crearTablasQualy(cantPartidosQualy);
+  			}
+		}
+
+		actualizarPosiciones();
+	}
+
+	var	 agregarEquipoLibre = function(){
+    
+	
+		var tabla = document.getElementById("tablaTorneo");
+		var ultimaFila = tabla.rows.length;
+		var cantidad = ultimaFila;
+		var nuevaLinea = tabla.insertRow(ultimaFila);
+
+		var cell0 = nuevaLinea.insertCell(0);
+		var cell1 = nuevaLinea.insertCell(1);
+		var cell2 = nuevaLinea.insertCell(2);
+
+		var numeroEquipo = document.createTextNode(cantidad);
+		numeroEquipo.id = 'cell' + cantidad;
+		cell0.appendChild(numeroEquipo);
+
+		var el = document.createElement('input');
+  		el.type = 'text';
+  		el.value = 'Equipo Libre';
+  		el.name = 'txtRow'+ cantidad;
+  		el.id = 'txtRow' + cantidad;
+  		el.size = 25;
+  		cell1.appendChild(el);
+		
+		var el = document.createElement('input');
+  		el.type = 'text';
+  		el.value = 'Equipo Libre';
+  		el.name = 'txtRow'+ cantidad;
+  		el.id = 'txtRow' + cantidad;
+  		el.size = 25;
+  		cell2.appendChild(el);
+
+  		var cell3 = nuevaLinea.insertCell(3);
+
+  		
+	}
+
+
+	function crearTablasQualy(cant){
+ 		//var r = new $.Deferred();
+
+ 		//setTimeout('alert("second function finished");d.resolve()',5000);
+		
+		alert("CREAR TABLAS QUALY 1");
+		limpiarTablasQualy();
+ 		
+		var body = document.getElementsByTagName('body')[0];
+	   	var tblQualy1 = document.createElement('table');
+	   	var tblQualy2 = document.createElement('table');
+	   	var tblQualy3 = document.createElement('table');
+
+	   	tblQualy1.id = "tblQualy1";
+	   	tblQualy2.id = "tblQualy2";
+	   	tblQualy3.id = "tblQualy3";
+
+	   	let qualy1 = new Array(cant*2);
+	   	let qualy2 = new Array(cant*2);
+	   	let qualy3 = new Array(cant*2);
+	   	let equipos  = document.getElementById("tablaTorneo");
+	   	let equipos2 = document.getElementById("tablaTorneo");
+	   	let equipos3 = document.getElementById("tablaTorneo");
+		
+		equipos  = armarArrayEquipos(equipos);
+	    qualy1   = armarQualy1(cant,equipos,qualy1);
+	    alert("CREAR TABLAS QUALY 2");
+	    equipos  = armarArrayEquipos(equipos2);
+	    qualy2   = armarQualy2(cant,equipos,qualy1,qualy2);
+	    alert("CREAR TABLAS QUALY 3");//ACA FALLA 
+	    equipos  = armarArrayEquipos(equipos3);
+	    qualy3  = armarQualy3(cant,equipos,qualy1,qualy2,qualy3);
+	    //alert("CREAR TABLAS QUALY 4");
+	   // alert("LA QUALY1 QUEDO: "+qualy1);
+	   // alert("LA QUALY2 QUEDO: "+qualy2);
+	   // alert("LA QUALY3 QUEDO: "+qualy3);
+
+		armarTablaQualy(tblQualy1,qualy1,1);
+		armarTablaQualy(tblQualy2,qualy2,2);
+		armarTablaQualy(tblQualy3,qualy3,3);
+
+		body.appendChild(tblQualy1);
+		body.appendChild(tblQualy2);
+		body.appendChild(tblQualy3);
+		//return r.promise();
+	}
+
+
+function limpiarTablasQualy(){
+
+	var body = document.getElementsByTagName('body')[0];
+	var tblQualy1 = document.getElementById("tblQualy1");
+	var tblQualy2 = document.getElementById("tblQualy2");
+	var tblQualy3 = document.getElementById("tblQualy3");
+
+	if(tblQualy1 != null){
+		body.removeChild(tblQualy1);
+	}
+	if(tblQualy2 != null){
+		body.removeChild(tblQualy2);
+	}
+	if(tblQualy3 != null){
+		body.removeChild(tblQualy3);
+	}
+}
+
+
+function armarTablaQualy(tbl,qualy,nroQualy){
+
+	var tablaEquipos = document.getElementById("tablaTorneo");
+
+	tbl.setAttribute("border", "1");
+   	var tr = document.createElement('tr');
+	tr.appendChild( document.createElement('td') );
+	tr.appendChild( document.createElement('td') );
+
+    tr.cells[1].appendChild( document.createTextNode(' TABLA QUALY '+nroQualy) );
+    tbl.appendChild(tr);
+
+    tr = document.createElement('tr');
+    tr.appendChild( document.createElement('td') );
+    tr.appendChild( document.createElement('td') );
+    tr.appendChild( document.createElement('td') );
+    tr.appendChild( document.createElement('td') );
+    tr.appendChild( document.createElement('td') );
+	tr.appendChild( document.createElement('td') );
+    tr.appendChild( document.createElement('td') );    
+    tr.cells[0].appendChild( document.createTextNode('Partido') );
+	tr.cells[1].appendChild( document.createTextNode('Equipo 1') );
+	tr.cells[4].appendChild( document.createTextNode('Equipo 2') );
+	tr.cells[5].appendChild( document.createTextNode('Nro.Equipo1') );
+	tr.cells[6].appendChild( document.createTextNode('Nro.Equipo2') );
+    tbl.appendChild(tr);
+
+    var contPartidos=0;
+    var cant=qualy.length;
+    var cantAux=cant;
+    var numRndmIdx = -1;
+    let equiposUsados = new Array(cant);
+
+    	do{
+    	
+    	numRndmIdx = Math.floor(Math.random()*cant);
+    	if(equiposUsados[numRndmIdx]!=1 && equiposUsados[qualy[numRndmIdx]]!=1){
+
+  		var equipo1 = tablaEquipos.rows[numRndmIdx+1].cells[1].childNodes[0].value + "-" + tablaEquipos.rows[numRndmIdx+1].cells[2].childNodes[0].value; 
+  		var equipo2 = tablaEquipos.rows[qualy[numRndmIdx]+1].cells[1].childNodes[0].value + "-" + tablaEquipos.rows[qualy[numRndmIdx]+1].cells[2].childNodes[0].value; 
+  		cantAux=cantAux-2;
+  		equiposUsados[numRndmIdx]=1;
+  		equiposUsados[qualy[numRndmIdx]]=1;
+
+  		tr = document.createElement('tr');
+    	tr.appendChild( document.createElement('td') );
+   		tr.appendChild( document.createElement('td') );
+    	tr.appendChild( document.createElement('td') );
+    	tr.appendChild( document.createElement('td') );
+    	tr.appendChild( document.createElement('td') );
+    	tr.appendChild( document.createElement('td') );//COLUMNA PARA NUMERO DE EQUIPO
+    	tr.appendChild( document.createElement('td') );//COLUMNA PARA NUMERO DE EQUIPO
+
+    	contPartidos = contPartidos + 1;
+    	tr.cells[0].appendChild( document.createTextNode(contPartidos) );
+		tr.cells[1].appendChild( document.createTextNode(equipo1) );
+		tr.cells[4].appendChild( document.createTextNode(equipo2) );
+		tr.cells[5].appendChild( document.createTextNode(numRndmIdx+1) );
+		tr.cells[6].appendChild( document.createTextNode(qualy[numRndmIdx]+1) );
+
+
+		var el = document.createElement('input');
+		el.type = 'number';
+		el.min = 0;
+		el.max = 7;
+		el.size = 1;
+		tr.cells[2].appendChild(el);
+
+
+		var el = document.createElement('input');
+		el.type = 'number';
+		el.min = 0;
+		el.max = 7;
+		el.size = 1;
+		tr.cells[3].appendChild(el);
+  		
+
+    	tbl.appendChild(tr);
+    	}
+    }while(cantAux > 0)
+}
+
+function resetEquipos(equipos){
+	for(var i=0;i<equipos.length;i++){
+		equipos[i]=null;
+	}
+	return equipos;
+} 
+
+function armarQualy1(cant,equipos,qualy1){
+	var cont = 0;
+	var numRndmIdx = -1, nunmRndmAntIdx = -1, valorPos = 0, valorPosAnt = 0;
+
+	do{	
+		cont++;	
+		numRndmIdx = Math.floor(Math.random()*equipos.length);
+		valorPos = equipos[numRndmIdx];
+  		
+  		if(cont==2){
+  		qualy1[valorPos-1]=valorPosAnt-1;	
+  		qualy1[valorPosAnt-1]=valorPos-1;
+  		cont = 0;
+  		}
+  		else{
+  			nunmRndmAntIdx   = numRndmIdx;
+  			valorPosAnt     = valorPos;
+  		}
+
+	equipos.splice(numRndmIdx, 1);
+ 	}while(equipos.length > 0)
+	return qualy1;
+
+
+}
+
+function armarQualy2(cant,equipos,qualy1,qualy2){
+	var cont=0,contaRepetida1=0;contaRepetida2=0;
+	var numRndmIdx = -1, nunmRndmAntIdx = -1, valorPos = 0, valorPosAnt = 0, valorPosAntEq1 = 0, valorPosEq2 = 0;
+	var equiposAux = equipos.slice();
+	do{
+		
+		numRndmIdx = Math.floor(Math.random()*equiposAux.length);
+		valorPos = equiposAux[numRndmIdx];
+		switch (cont){
+			case 1:
+				if(qualy1[valorPos-1]!=valorPosAnt-1){
+					if( qualy1[valorPosAnt-1]!=valorPos-1){
+					qualy2[valorPos-1]	  = valorPosAnt-1;	
+  					qualy2[valorPosAnt-1] = valorPos-1;
+  					equiposAux.splice(numRndmIdx, 1);
+  					cont = 0;
+  					contaRepetida2=0;
+					}
+					else{
+						contaRepetida2++;
+					}
+				}
+				else{
+					contaRepetida1++;
+				}
+				if(contaRepetida1 >= equipos.length || contaRepetida2 >= equipos.length){
+					qualy2.length = 0;	
+					equiposAux = equipos.slice();
+				}
+				break;
+			default:
+				cont++;
+				contaRepetida1=0;
+				nunmRndmAntIdx   = numRndmIdx;
+ 	 			valorPosAnt      = valorPos;
+	  			equiposAux.splice(numRndmIdx, 1);
+				break;
+		}
+ 	}while(equiposAux.length > 0)
+// 		equipos = equiposAux;
+	return qualy2;
+}
+
+
+function armarQualy3(cant,equipos,qualy1,qualy2,qualy3){
+	var cont=0;
+	var intentos=0;
+	var equiposAux = new Array();
+	var valor=0;
+
+	var numRndmIdx = -1, nunmRndmAntIdx = -1, valorPos = 0, valorPosAntEq1 = 0, valorPosEq2 = 0;
+	do{	
+
+		numRndmIdx = Math.floor(Math.random()*equipos.length);
+		valorPos = equipos[numRndmIdx];
+
+		switch (cont){
+			case 1:
+				if((qualy1[valorPos-1]!=valorPosAnt-1 && qualy1[valorPosAnt-1]!=valorPos-1 ) && (qualy2[valorPos-1]!=valorPosAnt-1 && qualy2[valorPosAnt-1]!=valorPos-1)){
+					qualy3[valorPos-1]	  = valorPosAnt-1;	
+  					qualy3[valorPosAnt-1] = valorPos-1;
+  					valor = equipos[numRndmIdx]
+  					equiposAux.push(parseInt(valor));
+  					equipos.splice(numRndmIdx, 1);
+  					cont = 0;
+  					intentos=0;
+					}
+				else{
+						intentos++;
+					}
+				break;
+			default:
+				cont++;
+				nunmRndmAntIdx   = numRndmIdx;
+ 	 			valorPosAnt      = valorPos;
+				equiposAux.push(parseInt(equipos[numRndmIdx]));
+				equipos.splice(numRndmIdx, 1);
+				break;
+		}
+
+		if(intentos>10){
+			valor = equipos[numRndmIdx]
+  			equiposAux.push(parseInt(valor));
+
+			equipos = new Array(equiposAux.length);
+			equiposAux.sort();
+			for(var i=0;i<equiposAux.length;i++){
+				equipos[i]=equiposAux[i];
+			}
+			equiposAux = new Array();
+			cont=0;
+			intentos=0;
+
+		}
+
+ 	}while(equipos.length > 0)
+
+	return qualy3;
+}
+
+
+function borrarTablaPosiciones(){
+	var body = document.getElementsByTagName('body')[0];
+	var table = document.getElementById("tblPosiciones");
+	body.removeChild(table);
+}
+
+function borrarQualy(){
+	limpiarTablasQualy();
+	borrarTablaPosiciones();
+	borrarEquipoLibre();
+	habilitarBotonesPreQualy();
+	deshabilitarBotonesPostQualy();
+	habilitarEliminar();
+}
+
+function actualizarPosiciones(){
+
+	 var table = document.getElementById("tblPosiciones");
+	 if(table!=null){
+	 	borrarTablaPosiciones();
+	 }
+
+	var tablaEquipos = document.getElementById("tablaTorneo");
+	var body = document.getElementsByTagName('body')[0];
+	var tablaPosiciones;
+	var tblQualy1  	 = document.getElementById("tblQualy1");
+	var tblQualy2 	 = document.getElementById("tblQualy2");
+	var tblQualy3 	 = document.getElementById("tblQualy3");
+	var posicion = 0;
+
+	
+	var cantEquipos = tablaEquipos.rows.length-1;
+	tablaPosiciones = document.createElement('table');
+	tablaPosiciones.setAttribute("border", "1");
+   	tablaPosiciones.setAttribute("id", "tblPosiciones");
+
+   	tr = document.createElement('tr');
+    tr.appendChild( document.createElement('td') );
+    tr.appendChild( document.createElement('td') );
+    tr.appendChild( document.createElement('td') );
+    tr.appendChild( document.createElement('td') );
+    tr.appendChild( document.createElement('td') );
+    tr.appendChild( document.createElement('td') );
+    tr.appendChild( document.createElement('td') );
+    tr.appendChild( document.createElement('td') );	
+
+    tr.cells[0].appendChild( document.createTextNode('Posicion') );
+	tr.cells[1].appendChild( document.createTextNode('Equipo') );
+	tr.cells[2].appendChild( document.createTextNode('PJ') );
+	tr.cells[3].appendChild( document.createTextNode('PG') );
+	tr.cells[4].appendChild( document.createTextNode('PP') );
+	tr.cells[5].appendChild( document.createTextNode('GF') );
+	tr.cells[6].appendChild( document.createTextNode('GC') );
+	tr.cells[7].appendChild( document.createTextNode('DIF GAMES') );
+
+   tablaPosiciones.appendChild(tr);
+
+    let partidosEquipos = new Array(cantEquipos);
+    
+    for(var i=0;i<cantEquipos;i++){
+    	partidosEquipos[i]= new Array(5);
+
+    	for(var j=0;j<5;j++){
+	    	partidosEquipos[i][j]=0;
+    	}
+    }
+
+   
+
+     for(var i=2;tblQualy1.rows[i];i++){
+     			var nroEquipo1   = tblQualy1.rows[i].cells[5].innerHTML-1; 
+     			var nroEquipo2   = tblQualy1.rows[i].cells[6].innerHTML-1;
+     			var gamesEquipo1 = Number(tblQualy1.rows[i].cells[2].childNodes[0].value);
+     			var gamesEquipo2 = Number(tblQualy1.rows[i].cells[3].childNodes[0].value);
+
+     			if(gamesEquipo1 >0 && gamesEquipo2 >0){
+	   			partidosEquipos[nroEquipo1][3] += gamesEquipo1;
+	   			partidosEquipos[nroEquipo1][4] += gamesEquipo2;
+	   			partidosEquipos[nroEquipo2][3] += gamesEquipo2;
+	   			partidosEquipos[nroEquipo2][4] += gamesEquipo1;
+
+	   			partidosEquipos[nroEquipo1][0] += 1;
+	   			partidosEquipos[nroEquipo2][0] += 1;
+	   			}
+
+	   			if((gamesEquipo1 == 6 && gamesEquipo2 < 6 ) || (gamesEquipo1 == 7 && gamesEquipo2 == 6)){
+	   				partidosEquipos[nroEquipo1][1]+=1;
+	   				partidosEquipos[nroEquipo2][2]+=1;
+	   			}
+	   			else if((gamesEquipo2 == 6 && gamesEquipo1 < 6 ) || (gamesEquipo2 == 7 && gamesEquipo1 == 6)){
+	   				partidosEquipos[nroEquipo2][1]+=1;
+	   				partidosEquipos[nroEquipo1][2]+=1;
+	   			}
+
+      	}
+
+     for(var i=2;tblQualy2.rows[i];i++){
+	   			var nroEquipo1   = tblQualy2.rows[i].cells[5].innerHTML-1; 
+     			var nroEquipo2   = tblQualy2.rows[i].cells[6].innerHTML-1;
+     			var gamesEquipo1 = Number(tblQualy2.rows[i].cells[2].childNodes[0].value);
+     			var gamesEquipo2 = Number(tblQualy2.rows[i].cells[3].childNodes[0].value);
+	   			
+	   			if(gamesEquipo1 >0 && gamesEquipo2 >0){
+	   			partidosEquipos[nroEquipo1][3] += gamesEquipo1;
+	   			partidosEquipos[nroEquipo1][4] += gamesEquipo2;
+	   			partidosEquipos[nroEquipo2][3] += gamesEquipo2;
+	   			partidosEquipos[nroEquipo2][4] += gamesEquipo1;
+
+	   			partidosEquipos[nroEquipo1][0] += 1;
+	   			partidosEquipos[nroEquipo2][0] += 1;
+				}
+
+	   			if((gamesEquipo1 == 6 && gamesEquipo2 < 6 ) || (gamesEquipo1 == 7 && gamesEquipo2 == 6)){
+	   				partidosEquipos[nroEquipo1][1]+=1;
+	   				partidosEquipos[nroEquipo2][2]+=1;
+	   			}
+	   			else if((gamesEquipo2 == 6 && gamesEquipo1 < 6 ) || (gamesEquipo2 == 7 && gamesEquipo1 == 6)){
+	   				partidosEquipos[nroEquipo2][1]+=1;
+	   				partidosEquipos[nroEquipo1][2]+=1;
+	   			}
+      	}
+
+     for(var i=2;tblQualy3.rows[i];i++){
+     			var nroEquipo1   = tblQualy3.rows[i].cells[5].innerHTML-1; 
+     			var nroEquipo2   = tblQualy3.rows[i].cells[6].innerHTML-1;
+     			var gamesEquipo1 = Number(tblQualy3.rows[i].cells[2].childNodes[0].value);
+     			var gamesEquipo2 = Number(tblQualy3.rows[i].cells[3].childNodes[0].value);
+
+	   			if(gamesEquipo1 >0 && gamesEquipo2 >0){
+	   			partidosEquipos[nroEquipo1][3] += gamesEquipo1;
+	   			partidosEquipos[nroEquipo1][4] += gamesEquipo2;
+	   			partidosEquipos[nroEquipo2][3] += gamesEquipo2;
+	   			partidosEquipos[nroEquipo2][4] += gamesEquipo1;
+
+
+	   			partidosEquipos[nroEquipo1][0] += 1;
+	   			partidosEquipos[nroEquipo2][0] += 1;
+	   			}
+
+	   			if((gamesEquipo1 == 6 && gamesEquipo2 < 6 ) || (gamesEquipo1 == 7 && gamesEquipo2 == 6)){
+	   				partidosEquipos[nroEquipo1][1]+=1;
+	   				partidosEquipos[nroEquipo2][2]+=1;
+	   			}
+	   			else if((gamesEquipo2 == 6 && gamesEquipo1 < 6 ) || (gamesEquipo2 == 7 && gamesEquipo1 == 6)){
+	   				partidosEquipos[nroEquipo2][1]+=1;
+	   				partidosEquipos[nroEquipo1][2]+=1;
+	   			}
+      	}
+
+
+    	for(var i=0; i<cantEquipos;i++){
+
+   		posicion +=1;
+
+   		var equipo = tablaEquipos.rows[i+1].cells[1].childNodes[0].value + "-" + tablaEquipos.rows[i+1].cells[2].childNodes[0].value; 
+
+
+  		tr = document.createElement('tr');
+		tr.appendChild( document.createElement('td') );
+	    tr.appendChild( document.createElement('td') );
+	    tr.appendChild( document.createElement('td') );
+	    tr.appendChild( document.createElement('td') );
+	    tr.appendChild( document.createElement('td') );
+	    tr.appendChild( document.createElement('td') );
+	    tr.appendChild( document.createElement('td') );
+	    tr.appendChild( document.createElement('td') );	
+    	
+
+    	tr.cells[0].appendChild( document.createTextNode(posicion) );			//POSICION
+		tr.cells[1].appendChild( document.createTextNode(equipo));				//EQUIPO
+		tr.cells[2].appendChild( document.createTextNode(partidosEquipos[i][0])); //PJ
+		tr.cells[3].appendChild( document.createTextNode(partidosEquipos[i][1])); //PG
+		tr.cells[4].appendChild( document.createTextNode(partidosEquipos[i][2])); //PP
+		tr.cells[5].appendChild( document.createTextNode(partidosEquipos[i][3])); //GF
+		tr.cells[6].appendChild( document.createTextNode(partidosEquipos[i][4])); //GC
+		tr.cells[7].appendChild( document.createTextNode(partidosEquipos[i][3]-partidosEquipos[i][4])); //DIF GAMES
+
+		tablaPosiciones.appendChild(tr);
+		}
+
+	body.appendChild(tablaPosiciones);
+    ordenarPosiciones();
+    armaSuperTieBreak();
+  }
+
+
+function ordenarPosiciones(){  
+  var table, rows, switching, i, x, y, w, z, shouldSwitch;
+  table = document.getElementById("tblPosiciones");
+  switching = true;
+ 
+  while (switching) {
+    switching = false;
+    rows = table.getElementsByTagName("tr");
+    for (i = 1; i < (rows.length); i++) {
+      shouldSwitch = false;
+      
+      x = rows[i].getElementsByTagName("td")[3];
+      y = rows[i + 1].getElementsByTagName("td")[3];
+      w = rows[i].getElementsByTagName("td")[7];
+      z = rows[i + 1].getElementsByTagName("td")[7];
+
+      if ((x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) || (x.innerHTML.toLowerCase() == y.innerHTML.toLowerCase() && (parseInt(w.innerHTML.toLowerCase()) < parseInt(z.innerHTML.toLowerCase())) )) {
+        //alert("X: "+x.innerHTML+" Y: "+y.innerHTML+" W: "+w.innerHTML+" Z: "+z.innerHTML);
+        shouldSwitch= true;
+        //CAMBIO EL NUMERO DE LA POSICION
+        rows[i+1].cells[0].innerHTML = i; 
+      	rows[i].cells[0].innerHTML = i+1;
+        break;
+      }
+    }
+    if (shouldSwitch) {	
+
+      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      switching = true;
+    }
+  }
+   
+ // actualizarPosiciones();
+}
+
+
+function armarArrayEquipos(){
+	var tabla = document.getElementById("tablaTorneo");	
+	var equipos = new Array(tabla.rows.length-1);
+	var i=0,cont=0;
+
+	for(i=1;tabla.rows[i];i++){
+			equipos[cont] = tabla.rows[i].cells[0].innerHTML;
+			cont++;
+		}
+	return equipos;
+}
+
+function deshabilitarEliminar(){
+	var tabla = document.getElementById("tablaTorneo");	
+	var i=0;
+	for(i=2;tabla.rows[i];i++){
+			document.getElementById(tabla.rows[i].cells[3].childNodes[0].id).disabled = true;
+		}
+}
+
+function habilitarEliminar(){
+	var tabla = document.getElementById("tablaTorneo");	
+	var i=0;
+	for(i=2;tabla.rows[i];i++){
+			document.getElementById(tabla.rows[i].cells[3].childNodes[0].id).disabled = false;
+		}
+
+}
+
+function deshabilitarBotonesPostQualy(){
+	document.getElementById("btnBorrar").disabled = true;
+	document.getElementById("btnActualizar").disabled = true;
+}
+
+function deshabilitarBotonesPreQualy(){
+	document.getElementById("btnAgregar").disabled = true;
+	document.getElementById("btnGenerar").disabled = true;
+}
+
+
+function habilitarBotonesPostQualy(){
+	document.getElementById("btnBorrar").disabled = false;
+	document.getElementById("btnActualizar").disabled = false;
+}
+
+function habilitarBotonesPreQualy(){
+	document.getElementById("btnAgregar").disabled = false;
+	document.getElementById("btnGenerar").disabled = false;
+}
+
+function borrarEquipoLibre(){
+	var tabla = document.getElementById("tablaTorneo");	
+	var i=0;
+	for(i=5;tabla.rows[i];i++){
+			if(tabla.rows[i].cells[1].childNodes[0].value == 'Equipo Libre'){
+				//var eqLibId = document.getElementById(tabla.rows[i].cells[1].childNodes[0].id);
+				tabla.deleteRow(i);
+				break;	
+			}
+		
+		}
+}
+
+var rounds;
+rounds = [[
+        {
+          player1: { name: "Player 111", winner: true, ID: 111 },
+          player2: { name: "Player 211", ID: 211 }
+        },
+
+        { player1: { name: "Player 112", winner: true, ID: 112 },
+          player2: { name: "Player 212", ID: 212 }
+        },
+    ]
+ ];
+
+
+ function armaSuperTieBreak(){
+	var table,rows;
+	var pg1, pg2, dg1, dg2, gf1,gf2, gc1,gc2,i;
+
+	alert("HOLA");
+	table = document.getElementById("tblPosiciones");
+	rows = table.getElementsByTagName("tr");
+
+	for(i=1;i<(rows.length);i=i+2){
+ 	  pg1 = rows[i].getElementsByTagName("td")[3];
+      pg2 = rows[i + 1].getElementsByTagName("td")[3];
+      dg1 = rows[i].getElementsByTagName("td")[7];
+      dg2 = rows[i + 1].getElementsByTagName("td")[7];
+      gf1 = rows[i].getElementsByTagName("td")[5];
+      gf2 = rows[i + 1].getElementsByTagName("td")[5];
+      gc1 = rows[i].getElementsByTagName("td")[6];
+ 	  gc2 = rows[i+1].getElementsByTagName("td")[6];
+
+
+ 	  
+ 	  if((pg1.innerHTML.toLowerCase() == pg2.innerHTML.toLowerCase()) && (dg1.innerHTML.toLowerCase() == dg2.innerHTML.toLowerCase()) && (gf1.innerHTML.toLowerCase() == gf2.innerHTML.toLowerCase()) && (gc1.innerHTML.toLowerCase() == gc2.innerHTML.toLowerCase()) ){
+ 	  	alert("HAY SUPER TIE BREAK ENTRE EL EQUIPO DE LA POSICION: "+i+" Y"+" LA POSICION: "+(i+1));
+ 	  }
+	}
+}
+         
+
+
+var titles = ['round 1'];
+
+$(document).ready(function(){
+$(".brackets").brackets({
+  rounds: rounds,
+  titles: titles,
+  color_title: 'black',
+  border_color: 'black',
+  color_player: 'black',
+  bg_player: 'red',
+  color_player_hover: 'black',
+  bg_player_hover: 'red',
+  border_radius_player: '1px',
+  border_radius_lines: '1px',
+});
+});
+
+</script>
+
+</head>
+<title>AMERILEOS</title>
+<body onload="deshabilitarBotonesPostQualy()">
+
+<div><p>Sede: <INPUT TYPE="TEXT" NAME="Sede" SIZE="20"></p></div>
+<div><p>Categoria: <INPUT TYPE="TEXT" NAME="Categoria" SIZE="1"></p></div>
+<div><p>Fecha: <INPUT TYPE="DATE" NAME="Fecha_Torneo" SIZE="10"></p></div>
+<div><p>Hora: <INPUT TYPE="TIME" NAME="Hora_Torneo" SIZE="1"></p></div>
+<div><p>Precio Inscripcion: <INPUT TYPE="TEXT" NAME="Precio_Inscripcion" SIZE="1"></p></div>
+<FORM METHOD="POST" ACTION="">
+<TABLE BORDER="1" id="tablaTorneo">
+	<tr>
+		<td>Equipo</td>
+		<td>Jugador 1</td>
+		<td>Jugador 2</td>
+	</tr>
+	<tr>
+		<td>1</td>
+		<td><input type="text" name="txtRow1" id="txtRow1" size="25"></td>
+		<td><input type="text" name="txtRow1" id="txtRow1" size="25"></td>
+		<td><input type="button" name="btnRow1" id="btnRow1" value="Eliminar" onClick=""></td>
+	</tr>
+</TABLE>
+<P>
+	<INPUT TYPE="Button" VALUE="Agregar Equipo" id="btnAgregar" NAME="B1" onClick="agregarLinea();">
+	<INPUT TYPE="Button" VALUE="Generar Qualy"  id="btnGenerar" NAME="B2" onClick="generarQualy();">
+	<INPUT TYPE="Button" VALUE="Borrar Qualy"   id="btnBorrar"  NAME="B2" onClick="borrarQualy();">
+	<INPUT TYPE="Button" VALUE="Actualizar Posiciones" id ="btnActualizar"  NAME="B3" onClick="actualizarPosiciones();">
+
+</FORM>
+
+<div class="bracket">
+
+
+</div>
+
+</body>
+
+</html>
